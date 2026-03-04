@@ -1,0 +1,168 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Simple in-app payments app (frontend)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Implement Internet Identity login/logout with session-aware UI that shows the authenticated user and blocks payment actions when signed out.",
+      "acceptanceCriteria": [
+        "User can log in using Internet Identity and log out",
+        "UI shows a signed-in state (e.g., user principal) and a signed-out state",
+        "All payment actions are disabled or blocked when signed out"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Create a login/logout button using the selected authorization component patterns (Internet Identity via useInternetIdentity) and clear cached data on logout via React Query. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/ProfileSetupModal.tsx",
+          "operation": "create",
+          "description": "Add first-time profile setup (ask for a human-readable name) using authorization component guidance: call getCallerUserProfile and saveCallerUserProfile, and avoid a modal flash by respecting the actor dependency/loading pattern. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/auth/useCurrentUser.ts",
+          "operation": "create",
+          "description": "Create a small auth/session hook that exposes isAuthenticated, principal (string), and current user profile (name) by composing useInternetIdentity + useActor + getCallerUserProfile query; ensure signed-out state returns nulls and signed-in state is stable. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Implement the session-aware top-level UI: header with logo and login button; signed-out landing state; signed-in dashboard + send form; ensure payment UI is not interactive when signed out and that logout clears/refreshes visible data. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Build a signed-in send-payment form with recipient, amount, memo, and clear success/error feedback, refreshing balance and history on success.",
+      "acceptanceCriteria": [
+        "Form validates recipient principal format and numeric amount before submission",
+        "On success, UI shows a confirmation including amount and recipient",
+        "On failure, UI shows a human-readable error message returned/mapped from the backend",
+        "After a successful send, balance and history views refresh automatically"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/validation.ts",
+          "operation": "create",
+          "description": "Add frontend validation helpers for parsing/validating principal text and numeric amount input (including non-empty, > 0, and integer handling for bigint conversion) before submission."
+        },
+        {
+          "path": "frontend/src/hooks/payments/useTransferFunds.ts",
+          "operation": "create",
+          "description": "Create a transfer hook that calls the backend capability transferFunds(recipient, amount, memo), maps errors into human-readable messages, and invalidates/refetches balance + transactions queries on success."
+        },
+        {
+          "path": "frontend/src/components/payments/SendPaymentForm.tsx",
+          "operation": "create",
+          "description": "Implement the Send payment form UI (recipient principal, amount, optional memo) gated to authenticated users; validate inputs before calling useTransferFunds; render inline success confirmation and backend error messages; disable submit while pending and when signed out."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the SendPaymentForm into the signed-in view and ensure it triggers visible refreshes (via shared React Query keys) so the balance and history update immediately after a successful send."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add a signed-in dashboard showing current balance and a sent/received transaction history with clean loading/empty/error states.",
+      "acceptanceCriteria": [
+        "Balance is loaded from the backend and displayed prominently",
+        "Transaction history loads from the backend and distinguishes sent vs received",
+        "History handles empty state and loading/error states cleanly"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/payments/useBalance.ts",
+          "operation": "create",
+          "description": "Create a balance query hook calling the backend capability getBalance(), with loading and error state surfaced for the UI."
+        },
+        {
+          "path": "frontend/src/hooks/payments/useTransactions.ts",
+          "operation": "create",
+          "description": "Create a transactions query hook calling the backend capability listTransactions(), returning a capped list as provided by the backend and exposing loading/empty/error states."
+        },
+        {
+          "path": "frontend/src/components/payments/BalanceCard.tsx",
+          "operation": "create",
+          "description": "Add a balance display card that formats bigint for display and clearly highlights the user’s current balance, handling loading/error UI states."
+        },
+        {
+          "path": "frontend/src/components/payments/TransactionHistoryList.tsx",
+          "operation": "create",
+          "description": "Render transaction history with sent vs received visual distinction (based on comparing sender/recipient to the current principal), showing amount, counterparty, timestamp, and memo; include empty state plus loading/error states."
+        },
+        {
+          "path": "frontend/src/hooks/payments/useMintForDemo.ts",
+          "operation": "create",
+          "description": "Add an optional demo helper hook calling the backend capability mintForDemo(); on success invalidate/refetch balance and transactions so first-time users can quickly try sending payments."
+        },
+        {
+          "path": "frontend/src/components/payments/Dashboard.tsx",
+          "operation": "create",
+          "description": "Compose BalanceCard, optional demo-mint action, and TransactionHistoryList into a cohesive signed-in dashboard section."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the Dashboard into the signed-in UI and ensure it is only visible/usable when authenticated; keep signed-out users on the landing state."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Create and apply a consistent finance-themed visual design system using a non-blue/non-purple primary palette.",
+      "acceptanceCriteria": [
+        "App has a consistent non-blue/non-purple primary color and a secondary accent",
+        "All main UI (header, cards, forms, lists, buttons) follows the chosen theme",
+        "Theme is applied consistently across signed-out and signed-in states"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styling with a cohesive payments theme using CSS variables consumed by Tailwind (e.g., primary in emerald/green and a warm accent like amber), plus consistent typography/spacing defaults; ensure no blue/purple primary palette is used."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust/confirm Tailwind theme usage to align with the new CSS variable palette (primary/secondary/accent/background/foreground) so all components inherit the consistent non-blue/non-purple theme."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Apply the theme consistently in layout and shared UI surfaces (header, main container, cards, buttons, forms, lists) for both signed-out and signed-in states."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Add generated static logo and hero illustration assets and render them in the header and signed-out landing state.",
+      "acceptanceCriteria": [
+        "Images exist in frontend/public/assets/generated with the specified filenames",
+        "UI renders the logo in the app header (or equivalent prominent location)",
+        "UI renders the hero/background illustration on the signed-out landing state without loading from the backend"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/paymark-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated logo asset at the exact required path: frontend/public/assets/generated/paymark-logo.dim_512x512.png."
+        },
+        {
+          "path": "frontend/public/assets/generated/payments-hero.dim_1600x900.png",
+          "operation": "create",
+          "description": "Add the generated hero/background illustration asset at the exact required path: frontend/public/assets/generated/payments-hero.dim_1600x900.png."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Render the logo from frontend/public/assets/generated/paymark-logo.dim_512x512.png in the app header and render the hero/illustration from frontend/public/assets/generated/payments-hero.dim_1600x900.png in the signed-out landing state as static assets (no backend loading)."
+        }
+      ]
+    }
+  ]
+}

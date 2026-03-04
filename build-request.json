@@ -1,0 +1,186 @@
+{
+  "kind": "build_request",
+  "title": "Build a simple in-app money sending (payments) app",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement Internet Identity login and session-aware UI so users can sign in/out and the app clearly indicates the currently authenticated user.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app to pay money"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can log in using Internet Identity and log out",
+        "UI shows a signed-in state (e.g., user principal) and a signed-out state",
+        "All payment actions are disabled or blocked when signed out"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Create backend data models and stable storage for user accounts, balances, and a transaction ledger that records transfers between users (sender, recipient, amount, timestamp, memo, unique id).",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app to pay money"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Balances persist across canister upgrades (use stable storage)",
+        "Each transfer is stored as an immutable transaction record with a unique id",
+        "Backend can return a user’s current balance and their transaction history"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement backend APIs for: (1) getting the caller’s balance, (2) transferring funds from the caller to a specified recipient principal, (3) listing transactions for the caller (sent/received), and (4) (for demo purposes) optionally minting an initial balance for first-time users so they can try sending payments.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app to pay money"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Transfer rejects if amount is zero/negative, exceeds sender balance, or recipient is missing/invalid",
+        "Transfer updates sender and recipient balances atomically and writes exactly one transaction record",
+        "Transaction listing returns deterministic, paginated or capped results to avoid unbounded responses",
+        "New users can obtain a small initial balance in a controlled way (e.g., one-time grant) to enable testing"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Build the core payment UI: a ‘Send payment’ form that lets a signed-in user enter recipient principal, amount, and an optional memo, then submit and receive clear success/error feedback.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app to pay money"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Form validates recipient principal format and numeric amount before submission",
+        "On success, UI shows a confirmation including amount and recipient",
+        "On failure, UI shows a human-readable error message returned/mapped from the backend",
+        "After a successful send, balance and history views refresh automatically"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Add a dashboard screen showing the signed-in user’s current balance and a transaction history list with sent vs received entries (amount, counterparty, timestamp, memo).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app to pay money"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Balance is loaded from the backend and displayed prominently",
+        "Transaction history loads from the backend and distinguishes sent vs received",
+        "History handles empty state and loading/error states cleanly"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Add basic security/abuse controls in the backend: enforce that only the caller can spend the caller’s balance, and rate-limit or otherwise constrain any demo mint/initial-balance feature to prevent repeated farming by the same principal.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app to pay money"
+        ]
+      },
+      "acceptanceCriteria": [
+        "No API allows spending from an account other than the caller’s account",
+        "Initial balance/minting (if provided) can be claimed at most once per principal (or equivalent constraint)",
+        "Backend returns consistent error variants/messages for unauthorized/invalid actions"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Create a coherent visual theme for a finance/payments app (colors, typography, spacing, component styling) and apply it consistently across all screens without using a blue/purple primary palette.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app to pay money"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App has a consistent non-blue/non-purple primary color and a secondary accent",
+        "All main UI (header, cards, forms, lists, buttons) follows the chosen theme",
+        "Theme is applied consistently across signed-out and signed-in states"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Add generated static image assets (logo and a simple hero/background illustration) under frontend/public/assets/generated and use them in the UI (e.g., header/logo area and signed-out landing state).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create a app to pay money"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Images exist in frontend/public/assets/generated with the specified filenames",
+        "UI renders the logo in the app header (or equivalent prominent location)",
+        "UI renders the hero/background illustration on the signed-out landing state without loading from the backend"
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in backend/main.mo (no additional backend services)",
+    "Do not modify any files under frontend immutablePaths; compose existing hooks/components instead",
+    "Use Internet Identity only for authentication (no third-party auth providers)",
+    "Do not integrate external databases or external payment providers"
+  ],
+  "nonGoals": [
+    "Connecting to real-world bank accounts or card payments",
+    "Crypto wallet integrations (e.g., MetaMask/WalletConnect)",
+    "Using external ledgers or external token standards beyond an in-canister balance model",
+    "Real-time chat or WebSocket-based live updates"
+  ],
+  "imageRequirements": {
+    "required": [
+      "Minimalist payments app logo, flat vector style, dark-on-light (paymark-logo.dim_512x512.png)",
+      "Abstract finance-themed hero illustration with shapes and subtle texture, light background, warm accent colors (payments-hero.dim_1600x900.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [
+      "Build a simple app that lets users send payments to each other (in-app balance)"
+    ],
+    "goalsToRemove": [],
+    "preferencesToAdd": [
+      "Use English for user-facing text"
+    ],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

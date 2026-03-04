@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Create an app that enables users to pay/send money.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Minimalist payments app logo, flat vector style, dark-on-light (paymark-logo.dim_512x512.png)\n- Abstract finance-themed hero illustration with shapes and subtle texture, light background, warm accent colors (payments-hero.dim_1600x900.png)",
+  "existing_features": [
+    {
+      "id": "feature-implement-internet-identity-login-and-session-aware-ui-so-users-can-sign-in-out-and-the-app-clearly-indicates-the-currently-authenticated-user",
+      "title": "Implement Internet Identity login and session-aware UI so users can sign in/out and the app clearly indicates the currently authenticated user.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-the-core-payment-ui-a-send-payment-form-that-lets-a-signed-in-user-enter-recipient-principal-amount-and-an-optional-memo-then-submit-and-receive-clear-success-error-feedback",
+      "title": "Build the core payment UI: a ‘Send payment’ form that lets a signed-in user enter recipient principal, amount, and an optional memo, then submit and receive clear success/error feedback.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-dashboard-screen-showing-the-signed-in-user-s-current-balance-and-a-transaction-history-list-with-sent-vs-received-entries-amount-counterparty-timestamp-memo",
+      "title": "Add a dashboard screen showing the signed-in user’s current balance and a transaction history list with sent vs received entries (amount, counterparty, timestamp, memo).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-coherent-visual-theme-for-a-finance-payments-app-colors-typography-spacing-component-styling-and-apply-it-consistently-across-all-screens-without-using-a-blue-purple-primary-palette",
+      "title": "Create a coherent visual theme for a finance/payments app (colors, typography, spacing, component styling) and apply it consistently across all screens without using a blue/purple primary palette.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-generated-static-image-assets-logo-and-a-simple-hero-background-illustration-under-frontend-public-assets-generated-and-use-them-in-the-ui-e-g-header-logo-area-and-signed-out-landing-state",
+      "title": "Add generated static image assets (logo and a simple hero/background illustration) under frontend/public/assets/generated and use them in the UI (e.g., header/logo area and signed-out landing state).",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Build a money payment app (send/pay money).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Create backend data models and stable storage for user accounts, balances, and a transaction ledger that records transfers between users (sender, recipient, amount, timestamp, memo, unique id).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Implement backend APIs for: (1) getting the caller’s balance, (2) transferring funds from the caller to a specified recipient principal, (3) listing transactions for the caller (sent/received), and (4) (for demo purposes) optionally minting an initial balance for first-time users so they can try sending payments.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add basic security/abuse controls in the backend: enforce that only the caller can spend the caller’s balance, and rate-limit or otherwise constrain any demo mint/initial-balance feature to prevent repeated farming by the same principal.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Build a simple in-app money sending (payments) app",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,22 @@
+{
+  "frontend/src/index.css": "Global styles with emerald/green primary and amber accent color system using OKLCH, supporting both light and dark modes with finance-themed palette.",
+  "frontend/tailwind.config.js": "Tailwind configuration extending the theme with custom fonts (Inter), emerald/amber color tokens, custom shadows, and finance-themed animations.",
+  "frontend/src/App.tsx": "Main application component managing authentication state, rendering header with logo, signed-out landing page with hero image, and authenticated dashboard with profile setup.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including user profile, balance, transactions, demo minting, and fund transfers with automatic cache invalidation.",
+  "frontend/src/utils/validation.ts": "Validation utilities for principal IDs and amounts, plus formatting helpers for displaying principals and bigint amounts.",
+  "frontend/src/components/auth/LoginButton.tsx": "Authentication button component handling Internet Identity login/logout with loading states and query cache clearing on logout.",
+  "frontend/src/components/auth/ProfileSetupModal.tsx": "Modal dialog for first-time user profile setup, prompting for name with proper loading state handling to prevent flash.",
+  "frontend/src/components/payments/Dashboard.tsx": "Main dashboard layout composing balance card, send payment form, and transaction history in a responsive grid.",
+  "frontend/src/components/payments/BalanceCard.tsx": "Card displaying current balance with demo token minting feature for new users, including success/error feedback.",
+  "frontend/src/components/payments/SendPaymentForm.tsx": "Payment form with recipient principal, amount, and memo fields, including validation, error handling, and success confirmation.",
+  "frontend/src/components/payments/TransactionHistoryList.tsx": "Scrollable list of transactions showing sent/received/mint entries with visual distinction, counterparty info, and timestamps.",
+  "frontend/src/components/ui/button.tsx": "Reusable button component with variants (default, destructive, outline, secondary, ghost, link) and sizes.",
+  "frontend/src/components/ui/card.tsx": "Card component with header, title, description, content, footer, and action sections for structured content display.",
+  "frontend/src/components/ui/input.tsx": "Styled input field component with focus states and disabled styling.",
+  "frontend/src/components/ui/label.tsx": "Form label component with proper accessibility and styling.",
+  "frontend/src/components/ui/textarea.tsx": "Multi-line text input component with consistent styling.",
+  "frontend/src/components/ui/dialog.tsx": "Modal dialog component with overlay, header, footer, title, and description sections.",
+  "frontend/src/components/ui/alert.tsx": "Alert component with default and destructive variants for displaying messages.",
+  "frontend/src/components/ui/scroll-area.tsx": "Custom scrollable area component with styled scrollbar.",
+  "frontend/src/lib/utils.ts": "Utility function for merging Tailwind CSS classes with clsx and tailwind-merge."
+}
